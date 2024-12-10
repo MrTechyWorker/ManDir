@@ -57,7 +57,6 @@ class ManDir:
             os.remove(oldest_file)
             logger.info(f"{oldest_file} removed.")
 
-        # Save the demo file
         if txtfile is not None:
             name = _neram + txtfile[1]
             loc = os.path.join(self.folder_path, name)
