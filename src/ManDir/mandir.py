@@ -11,6 +11,12 @@ class NoContentGiven(Exception):
         self.message = message
         super().__init__(self.message)
 
+class DataInvalidError(Exception):
+    """Custom exception raised when a content passed to save is invalid."""
+    def __init__(self, message="Content Invalid"):
+        self.message = message
+        super().__init__(self.message)
+
 class ManDir:
     def __init__(self, folder_path, limit=15):
         """
@@ -35,9 +41,9 @@ class ManDir:
         Saves a file in the folder with data and extension. Deletes oldest files if folder exceeds the limit.
 
         Args:
-            txtfile (list of string): 
-            picklefile (list of string): 
-            csvfile (list of string): 
+            txtfile (list): 
+            picklefile (list): 
+            csvfile (list): 
         """
 
         _neram = datetime.now().strftime("Y%Y_M%m_D%d_H%H_M%M_S%S")
@@ -58,6 +64,13 @@ class ManDir:
             logger.info(f"{oldest_file} removed.")
 
         if txtfile is not None:
+            if not isinstance(txtfile, list):
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            if len(txtfile) < 2:
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+
             name = _neram + txtfile[1]
             loc = os.path.join(self.folder_path, name)
             with open(loc, "w") as f:
@@ -66,6 +79,13 @@ class ManDir:
             _flag = False
 
         if picklefile is not None:
+            if not isinstance(picklefile, list):
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            if len(picklefile) < 2:
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+                
             name = _neram + picklefile[1]
             loc = os.path.join(self.folder_path, name)
             with open(loc, "wb") as f:
@@ -73,7 +93,22 @@ class ManDir:
             logger.info(f"Pickle file {loc} saved.")
             _flag = False
 
+        def is_nested_list(obj):
+            return isinstance(obj, list) and any(isinstance(item, list) for item in obj)
+        
         if csvfile is not None:
+            if not isinstance(csvfile, list):
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            
+            if len(csvfile) < 2:
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            
+            if not is_nested_list(csvfile[0]):
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            
             name = _neram + csvfile[1]
             loc = os.path.join(self.folder_path, name)
             with open(loc, "w", newline="") as f:
@@ -83,12 +118,23 @@ class ManDir:
             _flag = False
 
         if imgfile is not None:
+            if not isinstance(imgfile, list):
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+            if len(imgfile) < 2:
+                logger.error("Provided save data invalid.")
+                raise DataInvalidError
+                
             name = _neram + imgfile[1]
             loc = os.path.join(self.folder_path, name)
-            cv2.imwrite(loc, imgfile[0])
+            try:
+                cv2.imwrite(loc, imgfile[0])
+            except Exception as e:
+                logger.critical(f"External error{e}")
+            
             logger.info(f"Image file {loc} saved.")
             _flag = False
 
         if _flag:
-            logger.error("NO content given to save")
+            logger.error("No content given to save")
             raise NoContentGiven
