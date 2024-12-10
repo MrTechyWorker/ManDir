@@ -1,0 +1,22 @@
+[project]
+name = "mandir"
+version = "0.1.0"
+description = "A Python package for managing directories efficiently."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "loguru>=0.7.3",
+    "opencv-python>=4.10.0.84",
+    "pip>=24.3.1",
+    "ruff>=0.8.2",
+]
+
+
+keywords = ["directory", "management", "file-operations", "python"]
+authors = [
+    { name = "Shashank Kanna", email = "techyworker420@gmail.com" }
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
