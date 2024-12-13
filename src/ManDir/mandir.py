@@ -46,7 +46,7 @@ class ManDir:
             csvfile (list): 
         """
 
-        _neram = datetime.now().strftime("%Y-%m-%d_at_%-I.%M.%S_%p")
+        _neram = datetime.now().strftime("%Y_%m_%d_at_%_I_%M_%S_%p")
         _flag = True
 
         # Check files in the folder
