@@ -4,7 +4,7 @@ Manage-Directory [File management library]
 
 ## Usage
 
-Warpping a Folder with Queue for files and folder inside, creating put and get actions with a overflow imit.
+Warpping a Folder with Queue for files and folder inside, creating put and get actions with a overflow limit.
 
 ## How to Install
 
