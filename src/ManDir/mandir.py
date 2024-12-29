@@ -36,17 +36,22 @@ class ManDir:
             os.makedirs(folder_path)
             logger.info(f"Created {folder_path}.")
 
-    def save(self, txtfile: list[str] = None, picklefile: list[str] =None, csvfile: list[str]=None, imgfile: list[str] = None):
+    def save(self, save_with_time: bool = True, txtfile: list[str] = None, picklefile: list[str] =None, csvfile: list[str]=None, imgfile: list[str] = None):
         """
         Saves a file in the folder with data and extension. Deletes oldest files if folder exceeds the limit.
 
         Args:
-            txtfile (list): 
-            picklefile (list): 
-            csvfile (list): 
+            save_with_time (bool) = True: Stores the given data in file name given along with time stamp. 
+            All args below are list of len 2 with index-0 having content to save and index-1 with file name ["Make sure file name is uniques when save_with_time is False"]]
+            txtfile (list) = None: 
+            picklefile (list) = None: 
+            csvfile (list) = None:
+            imgfile (list) = None:
         """
-
-        _neram = datetime.now().strftime("%Y_%m_%d_at_%_I_%M_%S_%p")
+        if save_with_time:
+            _neram = datetime.now().strftime("%Y_%m_%d_at_%_I_%M_%S_%p")
+        else:
+            _neram = ""
         _flag = True
 
         # Check files in the folder
