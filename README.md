@@ -4,7 +4,7 @@ Manage-Directory [File management library]
 
 ## Usage
 
-For information and usage instruction for the library refer [usage.ipynb](/examples/usage.ipynb)
+Warpping a Folder with Queue for files and folder inside, creating put and get actions with a overflow imit.
 
 ## How to Install
 
