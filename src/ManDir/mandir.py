@@ -18,7 +18,7 @@ class DataInvalidError(Exception):
         super().__init__(self.message)
 
 class ManDir:
-    def __init__(self, folder_path, limit=15):
+    def __init__(self, folder_path: str, limit: int = 15) -> None:
         """
         Initializes a directory management object.
         Creates the folder if it doesn't exist. Raises an exception if it already exists.
@@ -26,9 +26,11 @@ class ManDir:
         Args:
             folder_path (str): Path to the folder.
             limit (int): Maximum number of files allowed in the folder.
+        Return:
+            None
         """
         self.folder_path = folder_path
-        self.limit = limit
+        self.limit: int = limit
         if os.path.exists(folder_path):
             logger.info(f"{folder_path} already exists.")
             pass
@@ -36,17 +38,20 @@ class ManDir:
             os.makedirs(folder_path)
             logger.info(f"Created {folder_path}.")
 
-    def save(self, save_with_time: bool = True, txtfile: list[str] = None, picklefile: list[str] =None, csvfile: list[str]=None, imgfile: list[str] = None):
+    def save(self, save_with_time: bool = True, txtfile: list[str] = None, picklefile: list[str] =None, csvfile: list[str]=None, imgfile: list[str] = None) -> None:
         """
-        Saves a file in the folder with data and extension. Deletes oldest files if folder exceeds the limit.
+        Saves a file in the folder with data and extension in index-0, index-1 in list passed respectively. Deletes oldest files if folder exceeds the limit.
 
         Args:
             save_with_time (bool) = True: Stores the given data in file name given along with time stamp. 
-            All args below are list of len 2 with index-0 having content to save and index-1 with file name ["Make sure file name is uniques when save_with_time is False"]]
+
+            !! All args below are list of len 2 with index-0 having content to save and index-1 with file name ["Make sure file name is uniques when save_with_time is False"]] !!
             txtfile (list) = None: 
             picklefile (list) = None: 
             csvfile (list) = None:
             imgfile (list) = None:
+        Return:
+            None
         """
         if save_with_time:
             _neram = datetime.now().strftime("%Y_%m_%d_at_%_I_%M_%S_%p")
@@ -80,7 +85,7 @@ class ManDir:
             loc = os.path.join(self.folder_path, name)
             with open(loc, "w") as f:
                 f.write(txtfile[0])
-            logger.info(f"TXT file {loc} saved.")
+            logger.success(f"TXT file {loc} saved.")
             _flag = False
 
         if picklefile is not None:
@@ -95,7 +100,7 @@ class ManDir:
             loc = os.path.join(self.folder_path, name)
             with open(loc, "wb") as f:
                 pickle.dump(picklefile[0], f)
-            logger.info(f"Pickle file {loc} saved.")
+            logger.success(f"Pickle file {loc} saved.")
             _flag = False
 
         def is_nested_list(obj):
@@ -119,7 +124,7 @@ class ManDir:
             with open(loc, "w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerows(csvfile[0])
-            logger.info(f"CSV file {loc} saved.")
+            logger.success(f"CSV file {loc} saved.")
             _flag = False
 
         if imgfile is not None:
@@ -137,7 +142,7 @@ class ManDir:
             except Exception as e:
                 logger.critical(f"External error{e}")
             
-            logger.info(f"Image file {loc} saved.")
+            logger.success(f"Image file {loc} saved.")
             _flag = False
 
         if _flag:
